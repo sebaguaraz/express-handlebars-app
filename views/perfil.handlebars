@@ -1,0 +1,17 @@
+<h2>{{name}}</h2>
+<span>{{age}}</span>
+<p>este es el archivo PERFIL - VISTA</p>
+
+<!-- El enctype es fundamental para que viaje el archivo real -->
+<form action="/file/" method="POST" enctype="multipart/form-data">
+
+    <div>
+        <label for="avatar">Selecciona un archivo:</label>
+        <!-- El atributo name es la clave con la que Express leerá el archivo -->
+        <input type="file" name="miArchivo" required>
+    </div>
+
+    <br>
+
+    <button type="submit">Subir Archivo</button>
+</form>
