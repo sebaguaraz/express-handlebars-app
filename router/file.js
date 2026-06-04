@@ -1,17 +1,27 @@
 const express = require("express")
-const {renderView, sendFile} = require("../controller/file")
-
-const routerfile = express.Router()
-
-
 const multer = require("multer")
+const path = require("path")
+
+const { renderFormFile, renderSendFile } = require("../controller/file")
+
+const routerFile = express.Router()
+
+const fileFilter = function (request, file, cb) {
+    const allowedMimeTypes = ["image/jpeg", "image/png", "application/pdf"]
+    if (allowedMimeTypes.includes(file.mimetype)) {
+        cb(null, true)
+    } else {
+        cb(new Error("Tipo de archivo no permitido"), false)
+    }
+};
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, "uploads/")
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + "-" + file.originalname)
+        const ext = path.extname(file.originalname)
+        cb(null, Date.now() + "-" + file.originalname.replace(ext, "") + ext )
     }
 
 })
@@ -20,17 +30,16 @@ const limits = {
     fileSize: 1024 * 1024 * 5
 }
 
-const upload = multer( {limits: limits, storage: storage} )
-
-// * ------------------------------------------------------------
+const upload = multer({ limits: limits, storage: storage, fileFilter: fileFilter })
 
 
-routerfile.get("/", renderView)
 
-routerfile.post("/", upload.single("miArchivo"), sendFile)
+routerFile.get("/", renderFormFile)
 
+routerFile.post("/", upload.single("miArchivo"), renderSendFile)
 
 
 
 
-module.exports = routerfile
+
+module.exports = { routerFile }

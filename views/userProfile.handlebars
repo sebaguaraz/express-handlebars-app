@@ -1,0 +1,10 @@
+<h1>Perfil de Usuario por ID</h1>
+{{#if user}}
+<div class="card">
+    <h3>Nombre: {{user.name}}</h3>
+    <p>Email: {{user.email}}</p>
+    <p>Edad: {{user.age}}</p>
+</div>
+{{else}}
+<p>Usuario no encontrado</p>
+{{/if}}

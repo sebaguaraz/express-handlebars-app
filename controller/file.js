@@ -1,28 +1,18 @@
-function renderView(request, response) {
-    console.log(request.url)
-    console.log(request.path)
-    console.log(request.query)
-    const user = {
-        name: "sebastian",
-        age: 23
+function renderFormFile(request, response) {
+    response.render("formFile")
+
+}
+
+function renderSendFile(request, response) {
+    console.log(request.file)
+
+    if(!request.file) {
+        return response.status(400).json({message: "No se ha recibido ningún archivo"})
     }
-
-    response.render("perfil", user)
+    
+    response.status(200).json({message: "Archivo recibido correctamente", file: request.file})
 }
 
 
 
-
-
-function sendFile(request, response) {
-
-    response.send("Archivo subido correctamente", console.log(request.file))
-
-}
-
-
-
-
-
-
-module.exports = { renderView, sendFile }
+module.exports = { renderFormFile, renderSendFile }
